@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { NxWelcomeComponent } from './nx-welcome.component';
 
 @Component({
-  standalone: true,
-  imports: [NxWelcomeComponent, RouterModule],
   selector: 'cash-compass-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  template: `
+    <div class="bg-primary min-h-screen flex flex-col items-center justify-center">
+      <div class="w-full max-w-screen-lg">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  `
 })
 export class AppComponent {
   title = 'cash-compass';

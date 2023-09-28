@@ -1,1 +1,126 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Oxygen';
+  src: url('./assets/Oxygen-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Oxygen';
+  src: url('./assets/Oxygen-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Oxygen';
+  src: url('./assets/Oxygen-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+body {
+  font-family: 'Oxygen', serif;
+}
+
+:root {
+  --primary-color: #264653;
+  --secondary-color: #2a9d8f;
+  --success-color: #2a9d8f;
+  --info-color: #e9c46a;
+  --warning-color: #f4a261;
+  --danger-color: #e76f51;
+  --background-color: #f2f2f2;
+  --text-color: #333333;
+  --heading-color: #222222;
+  --card-background-color: #f0f4f8;
+}
+
+/* Global Utility Classes for Colors */
+.bg-primary {
+  background-color: var(--primary-color);
+}
+
+.bg-secondary {
+  background-color: var(--secondary-color);
+}
+
+.bg-success {
+  background-color: var(--success-color);
+}
+
+.bg-info {
+  background-color: var(--info-color);
+}
+
+.bg-warning {
+  background-color: var(--warning-color);
+}
+
+.bg-danger {
+  background-color: var(--danger-color);
+}
+
+.bg-card {
+  background-color: var(--card-background-color);
+}
+
+.text-primary {
+  color: var(--primary-color);
+}
+
+.text-secondary {
+  color: var(--secondary-color);
+}
+
+.text-success {
+  color: var(--success-color);
+}
+
+.text-info {
+  color: var(--info-color);
+}
+
+.text-warning {
+  color: var(--warning-color);
+}
+
+.text-danger {
+  color: var(--danger-color);
+}
+
+.text-heading {
+  color: var(--heading-color);
+}
+
+.text-body {
+  color: var(--text-color);
+}
+
+.border-primary {
+  border-color: var(--primary-color);
+}
+
+.border-secondary {
+  border-color: var(--secondary-color);
+}
+
+.border-success {
+  border-color: var(--success-color);
+}
+
+.border-info {
+  border-color: var(--info-color);
+}
+
+.border-warning {
+  border-color: var(--warning-color);
+}
+
+.border-danger {
+  border-color: var(--danger-color);
+}

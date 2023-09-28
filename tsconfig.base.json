@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@cash-compass/environments": ["libs/shared-environments/src/index.ts"],
       "@cash-compass/shared-models": ["libs/shared-models/src/index.ts"]
     }
   },

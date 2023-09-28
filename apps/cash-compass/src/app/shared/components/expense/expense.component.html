@@ -1,0 +1,16 @@
+<div class="text-body cursor-pointer" (click)="toggleExpand()">
+  <p class="font-semibold">
+    {{ getEmojiFromCategory(expense.category.name) }}
+    {{ expense.name }} - {{ expense.amount | currency: 'EUR' }}
+  </p>
+  <div #content [@expandCollapse]="stateName" class="overflow-hidden bg-info p-2 rounded-md mt-2" [ngClass]="isExpanded ? 'visible' : 'invisible'">
+    <div class="flex justify-between items-center">
+      <div>
+        <p>Amount: {{ expense.amount | currency: 'EUR' }}</p>
+        <p>Date: {{ expense.date | date }}</p>
+        <p>Category: {{ expense.category.name }}</p>
+      </div>
+      <button cashCompassRaisedButton="danger" class="text-white px-2 py-1 rounded h-10" (click)="onDelete()">Delete</button>
+    </div>
+  </div>
+</div>
