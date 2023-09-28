@@ -3,10 +3,10 @@ import {BehaviorSubject} from "rxjs";
 import {Expense} from "@cash-compass/shared-models";
 
 @Component({
-  selector: 'cash-compass-monthly-expenses',
-  templateUrl: './monthly-expenses.component.html',
-  styleUrls: ['./monthly-expenses.component.css'],
+  selector: 'cash-compass-filtered-expenses',
+  templateUrl: './filtered-expenses.component.html',
+  styleUrls: ['./filtered-expenses.component.css'],
 })
-export class MonthlyExpensesComponent {
+export class FilteredExpensesComponent {
   @Input() expenses$!: BehaviorSubject<Expense[]>;
 }

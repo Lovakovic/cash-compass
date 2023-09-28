@@ -1,7 +1,7 @@
 import {DashboardComponent} from "./dashboard.component";
 import {NgModule} from "@angular/core";
 import {CommonModule} from "@angular/common";
-import {MonthlyExpensesComponent} from "./components/monthly-expenses/monthly-expenses.component";
+import {FilteredExpensesComponent} from "./components/filtered-expenses/filtered-expenses.component";
 import {SearchComponent} from "./components/search/search.component";
 import {NavbarModule} from "../navbar/navbar.module";
 import {SharedModule} from "../shared/shared.module";
@@ -11,7 +11,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 @NgModule({
   declarations: [
     DashboardComponent,
-    MonthlyExpensesComponent,
+    FilteredExpensesComponent,
     SearchComponent
   ],
   imports: [
