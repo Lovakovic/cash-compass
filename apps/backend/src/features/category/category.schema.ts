@@ -8,6 +8,12 @@ type OmitId<T> = Omit<T, 'id'>;
 export class CategoryDocument extends Document implements OmitId<Category> {
   @Prop()
   name: string;
+
+  @Prop()
+  color: string;
+
+  @Prop()
+  emoji: string;
 }
 
 export const CategorySchema = SchemaFactory.createForClass(CategoryDocument);

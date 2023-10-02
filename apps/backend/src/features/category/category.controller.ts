@@ -11,6 +11,11 @@ export class CategoryController {
     return this.categoryService.create(createCategoryDto);
   }
 
+  @Post('bulk')
+  async createBulk(@Body() createCategoryDtos: Partial<Category>[]) {
+    return this.categoryService.createBulk(createCategoryDtos);
+  }
+
   @Get()
   async findAll() {
     return this.categoryService.findAll();

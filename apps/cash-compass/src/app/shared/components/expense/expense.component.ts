@@ -29,17 +29,6 @@ export class ExpenseComponent implements AfterViewInit {
   constructor(private renderer: Renderer2,
               private expenseService: ExpenseService) {}
 
-  getEmojiFromCategory(categoryName: string): string {
-    let emoji = '';
-    for (const char of categoryName) {
-      emoji += char;
-      if (Array.from(emoji).length === 1) {
-        break;
-      }
-    }
-    return emoji;
-  }
-
   ngAfterViewInit(): void {
     if (this.content?.nativeElement) {
       this.renderer.addClass(this.content.nativeElement, 'hidden-content');

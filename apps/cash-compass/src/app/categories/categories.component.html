@@ -3,11 +3,9 @@
   <div class="mb-6">
     <cash-compass-navbar></cash-compass-navbar>
   </div>
-
-  <!-- Categories Grid -->
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
     <div *ngFor="let category of categories" class="bg-secondary p-4 rounded-lg text-body font-semibold">
-      {{ category.name }}
+      {{ category.emoji }} - {{ category.name }}
     </div>
   </div>
 </div>

@@ -15,6 +15,8 @@ export class CategoryService {
     return {
       id: doc._id.toString(),
       name: doc.name,
+      color: doc.color,
+      emoji: doc.emoji
     };
   }
 
@@ -22,6 +24,17 @@ export class CategoryService {
     const createdCategory = new this.categoryModel(createCategoryDto);
     const saved = await createdCategory.save();
     return this.transform(saved);
+  }
+
+  async createBulk(createCategoryDtos: Partial<Category>[]): Promise<Category[]> {
+    const createdCategories: Category[] = [];
+
+    for (const dto of createCategoryDtos) {
+      const createdCategory = await this.create(dto);
+      createdCategories.push(createdCategory);
+    }
+
+    return createdCategories;
   }
 
   async findAll(): Promise<Category[]> {

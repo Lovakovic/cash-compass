@@ -19,12 +19,18 @@ export interface FilterData {
 export class DashboardComponent implements OnDestroy {
   private unsubscribe$ = new Subject<void>();
   expenses$: BehaviorSubject<Expense[]> = new BehaviorSubject<Expense[]>([]);
+  totalExpenses = 0;
   earliestDate: Date | undefined;
 
   constructor(private expenseService: ExpenseService) {
     this.expenseService.getEarliestExpenseDate()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(date => this.earliestDate = date);
+    this.expenses$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(expenses => {
+        this.totalExpenses = expenses.reduce((total, expense) => total + expense.amount, 0);
+      });
   }
 
   ngOnDestroy(): void {
@@ -68,7 +74,7 @@ export class DashboardComponent implements OnDestroy {
   private applySearchAndCategoryFilters(expenses: Expense[], filterData: FilterData): Expense[] {
     let filteredExpenses = [...expenses];
 
-    // Implementing a case-insensitive search and trim white spaces
+    // Case-insensitive search and trim white spaces
     if (filterData.searchTerm) {
       const searchTerm = filterData.searchTerm.toLowerCase().trim();
       filteredExpenses = filteredExpenses.filter(e => e.name.toLowerCase().includes(searchTerm));

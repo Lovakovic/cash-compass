@@ -28,6 +28,17 @@ export class ExpenseService {
     return this.transform(saved);
   }
 
+  async createBulk(createExpenseDtos: Partial<Expense>[]): Promise<Expense[]> {
+    const createdExpenses: Expense[] = [];
+
+    for (const dto of createExpenseDtos) {
+      const createdExpense = await this.create(dto);
+      createdExpenses.push(createdExpense);
+    }
+
+    return createdExpenses;
+  }
+
   async findAll(skip = 0, limit = 5): Promise<Expense[]> {
     const found = await this.expenseModel.find()
       .sort({ date: -1, createdAt: -1 })

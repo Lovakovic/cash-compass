@@ -1,6 +1,6 @@
 <div class="text-body cursor-pointer" (click)="toggleExpand()">
   <p class="font-semibold">
-    {{ getEmojiFromCategory(expense.category.name) }}
+    {{ expense.category.emoji }}
     {{ expense.name }} - {{ expense.amount | currency: 'EUR' }}
   </p>
   <div #content [@expandCollapse]="stateName" class="overflow-hidden bg-info p-2 rounded-md mt-2" [ngClass]="isExpanded ? 'visible' : 'invisible'">

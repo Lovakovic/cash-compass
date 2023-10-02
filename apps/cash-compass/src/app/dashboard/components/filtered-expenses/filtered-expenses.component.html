@@ -1,6 +1,6 @@
-<div>
-  <h2 class="text-heading text-3xl font-semibold mb-4">This month:</h2>
-  <div *ngFor="let expense of expenses$ | async" class="bg-secondary p-2 rounded-md mb-4">
+<div class="rounded-md shadow-md bg-primary p-4 overflow-y-auto">
+  <h3 class="text-white text-xl pb-3">Expenses</h3>
+  <div *ngFor="let expense of expenses$ | async" class="bg-info p-2 rounded-md mb-4">
     <cash-compass-expense [expense]="expense"></cash-compass-expense>
   </div>
 </div>

@@ -12,6 +12,11 @@ export class ExpenseController {
     return this.expenseService.create(createExpenseDto);
   }
 
+  @Post('bulk')
+  async createBulk(@Body() createExpenseDtos: Partial<Expense>[]) {
+    return this.expenseService.createBulk(createExpenseDtos);
+  }
+
   @Get()
   async findAll(@Query('skip') skip: string, @Query('limit') limit: string) {
     return this.expenseService.findAll(parseInt(skip), parseInt(limit));
