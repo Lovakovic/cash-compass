@@ -5,7 +5,7 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
 @Component({
   selector: 'cash-compass-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css'],
+  styleUrls: ['./navbar.component.scss'],
   animations: [
     trigger('expandCollapse', [
       state('collapsed', style({ height: '0px', opacity: 0, overflow: 'hidden', padding: '0px' })),

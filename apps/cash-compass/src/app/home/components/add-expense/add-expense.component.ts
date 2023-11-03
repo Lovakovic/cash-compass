@@ -9,7 +9,7 @@ import {Category, Expense} from "@cash-compass/shared-models";
 @Component({
   selector: 'cash-compass-add-expense',
   templateUrl: './add-expense.component.html',
-  styleUrls: ['./add-expense.component.css'],
+  styleUrls: ['./add-expense.component.scss'],
 })
 export class AddExpenseComponent implements OnInit, OnDestroy {
   expenseForm: FormGroup;

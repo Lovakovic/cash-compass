@@ -2,7 +2,9 @@ import {BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Qu
 import {ExpenseService} from "./expense.service";
 import {ParseISOPipe} from "./pipes/parse-iso.pipe";
 import {Expense} from "@cash-compass/shared-models";
+import {Public} from "../auth/public.decorator";
 
+@Public()
 @Controller('expense')
 export class ExpenseController {
   constructor(private readonly expenseService: ExpenseService) {}

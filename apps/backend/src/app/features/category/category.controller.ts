@@ -1,7 +1,9 @@
 import {Body, Controller, Delete, Get, Param, Post, Put} from '@nestjs/common';
 import {CategoryService} from "./category.service";
 import {Category} from "@cash-compass/shared-models";
+import {Public} from "../auth/public.decorator";
 
+@Public()
 @Controller('category')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}

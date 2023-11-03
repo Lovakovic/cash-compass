@@ -8,7 +8,7 @@ import {Category} from "@cash-compass/shared-models";
 @Component({
   selector: 'cash-compass-search',
   templateUrl: './search.component.html',
-  styleUrls: ['./search.component.css'],
+  styleUrls: ['./search.component.scss'],
   animations: [
     trigger('expandCollapse', [
       state('collapsed', style({ height: '0px', minHeight: '0' })),

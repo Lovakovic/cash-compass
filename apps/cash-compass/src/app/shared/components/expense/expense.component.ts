@@ -6,7 +6,7 @@ import {Expense} from "@cash-compass/shared-models";
 @Component({
   selector: 'cash-compass-expense',
   templateUrl: './expense.component.html',
-  styleUrls: ['./expense.component.css'],
+  styleUrls: ['./expense.component.scss'],
   animations: [
     trigger('expandCollapse', [
       state(

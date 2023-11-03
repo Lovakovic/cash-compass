@@ -5,7 +5,7 @@ import {Expense} from "@cash-compass/shared-models";
 @Component({
   selector: 'cash-compass-filtered-expenses',
   templateUrl: './filtered-expenses.component.html',
-  styleUrls: ['./filtered-expenses.component.css'],
+  styleUrls: ['./filtered-expenses.component.scss'],
 })
 export class FilteredExpensesComponent {
   @Input() expenses$!: BehaviorSubject<Expense[]>;

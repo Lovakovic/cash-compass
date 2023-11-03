@@ -4,7 +4,7 @@ import {BehaviorSubject, map, Observable, tap} from "rxjs";
 import {Expense} from "@cash-compass/shared-models";
 import {environment} from "@cash-compass/environments";
 
-const {apiUrl} = environment;
+const { apiUrl} = environment;
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +13,7 @@ export class ExpenseService {
   private expensesSubject = new BehaviorSubject<Expense[]>([]);
   expenses$ = this.expensesSubject.asObservable();
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   getExpenses(skip = 0, limit = 10): Observable<Expense[]> {
     return this.http.get<Expense[]>(`${apiUrl}/expense?skip=${skip}&limit=${limit}`).pipe(

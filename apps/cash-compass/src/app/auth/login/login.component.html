@@ -1,0 +1,49 @@
+<div class="min-h-[25rem] flex flex-col md:flex-row items-center justify-center bg-card p-4 gap-4">
+  <div class="flex-1 w-full md:max-w-[45%] bg-primary p-4">
+    <h2 class="mb-4 text-xl text-info font-bold text-center">Sign in</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="w-full max-w-md p-4">
+
+      <!-- Username field -->
+      <div>
+        <input type="text"
+               id="username"
+               formControlName="username"
+               class="border-primary rounded p-2 w-full"
+               placeholder="Username"
+               (blur)="loginForm.controls['username'].markAsTouched()"/>
+        <div class="h-6">
+          <p *ngIf="loginForm.get('username')?.errors?.['required'] && loginForm.get('username')?.touched" class="text-danger text-xs mt-1">Username cannot be empty.</p>
+        </div>
+      </div>
+
+      <!-- Password field -->
+      <div class="mb-2">
+        <input type="password"
+               id="password"
+               formControlName="password"
+               class="border-primary rounded p-2 w-full"
+               placeholder="Password"
+               (blur)="loginForm.controls['password'].markAsTouched()"/>
+        <div class="h-6">
+          <p *ngIf="loginForm.get('password')?.errors?.['required'] && loginForm.get('password')?.touched" class="text-danger text-xs mt-1">Password cannot be empty.</p>
+        </div>
+      </div>
+
+      <!-- Submit button -->
+      <button [disabled]="!loginForm.valid"
+              class="rounded w-full font-bold py-2 px-4"
+              cashCompassRaisedButton="info"
+      >Login</button>
+    </form>
+  </div>
+
+  <div class="hidden md:block w-px bg-secondary h-48 self-center"></div>
+
+  <div class="flex-1 w-full md:max-w-[45%] text-center">
+    <p class="font-bold text-body mb-4">Don't have an account?</p>
+    <button routerLink="/register"
+            class="rounded font-bold py-2 px-4"
+            cashCompassRaisedButton="secondary"
+    >Register</button>
+  </div>
+</div>

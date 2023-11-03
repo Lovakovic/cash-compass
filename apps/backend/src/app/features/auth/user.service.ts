@@ -5,6 +5,7 @@ import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import {CreateUserDto, LoginUserDto} from "./data/user.dto";
 import {ConfigService} from "../../config/config.service";
+import {JwtPayload} from "./jwt.strategy";
 
 @Injectable()
 export class UserService {
@@ -12,9 +13,16 @@ export class UserService {
   }
 
   async create(user: CreateUserDto) {
-    const newUser = new UserModel(user);
-    const result = await newUser.save();
-    return result.toObject() as User;
+    try {
+      console.log('Creating user:', user);
+      const newUser = new UserModel(user);
+      const result = await newUser.save();
+      console.log('User created:', result);
+      return result.toObject() as User;
+    } catch (error) {
+      console.error('Error creating user:', error);
+      throw error;
+    }
   }
 
   async login(loginUserDto: LoginUserDto) {
@@ -28,7 +36,7 @@ export class UserService {
       throw new UnauthorizedException();
     }
 
-    const payload = { username: user.username, sub: user._id };
+    const payload = { username: user.username, sub: user._id } as JwtPayload;
     const accessToken = jwt.sign(payload, this.configService.jwtSecret, {
       expiresIn: this.configService.jwtExpiry,
     });

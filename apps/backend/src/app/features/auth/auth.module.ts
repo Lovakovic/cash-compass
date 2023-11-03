@@ -6,11 +6,14 @@ import {JwtAuthGuard} from "./jwt-auth.guard";
 import {PassportModule} from "@nestjs/passport";
 import {ConfigModule} from "../../config/config.module";
 import {APP_GUARD} from "@nestjs/core";
+import {MongooseModule} from "@nestjs/mongoose";
+import {UserSchema} from "./data/user.schema";
 
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    ConfigModule
+    MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
+    ConfigModule,
   ],
   providers: [
     UserService,

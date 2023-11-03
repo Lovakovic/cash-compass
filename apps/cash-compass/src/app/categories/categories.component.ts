@@ -5,7 +5,7 @@ import {Category} from "@cash-compass/shared-models";
 @Component({
   selector: 'cash-compass-categories',
   templateUrl: './categories.component.html',
-  styleUrls: ['./categories.component.css']
+  styleUrls: ['./categories.component.scss']
 })
 export class CategoriesComponent implements OnInit {
   categories: Category[] = [];
