@@ -1,0 +1,42 @@
+.arrow-icon-collapsed {
+  cursor: pointer;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 36px;
+  height: 36px;
+  background-color: var(--primary-color);
+  mask: url('../../../../assets/icons/arrow-down.svg') no-repeat center;
+  mask-size: contain;
+  transition: transform 0.3s ease-in-out;
+}
+
+.arrow-flip {
+  transform: rotate(180deg);
+}
+
+.arrow-hover-down {
+  transform: translateY(5px);
+}
+
+.arrow-hover-up {
+  transform: translateY(-5px);
+}
+
+.arrow-flip.arrow-hover-up {
+  transform: rotate(180deg) translateY(-5px);
+}
+
+.arrow-flip.arrow-hover-down {
+  transform: rotate(180deg) translateY(5px);
+}
+
+/* Apply styles only when expanded */
+.bg-info.p-4.rounded-md.text-center.expanded {
+  padding: 16px; /* Adjust according to your original padding */
+}
+
+/* No padding when collapsed */
+.bg-info.p-4.rounded-md.text-center.collapsed {
+  padding: 0;
+}

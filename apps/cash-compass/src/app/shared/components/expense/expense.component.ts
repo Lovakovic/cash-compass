@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, Input, Renderer2, ViewChild} from '@angular/core';
 import {animate, state, style, transition, trigger} from "@angular/animations";
-import { ExpenseService } from '../../../service/expense.service';
-import {Expense} from "@cash-compass/shared-models";
+import { ExpenseService } from '../../service/expense.service';
+import {Expense} from "../../model/expense.model";
 
 @Component({
   selector: 'cash-compass-expense',
@@ -48,10 +48,7 @@ export class ExpenseComponent implements AfterViewInit {
   }
 
   onDelete() {
-    this.expenseService.deleteExpense(this.expense.id).subscribe({
-      next: () => console.log("Expense deleted"),
-      error: (err) => console.log("Error deleting expense:", err),
-    });
+    this.expenseService.deleteExpense(this.expense.id).subscribe();
   }
 
   get stateName() {

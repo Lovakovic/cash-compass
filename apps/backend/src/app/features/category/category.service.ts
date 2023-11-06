@@ -1,65 +1,50 @@
-import {Injectable, NotFoundException} from '@nestjs/common';
-import {InjectModel} from "@nestjs/mongoose";
-import {Model} from "mongoose";
-import {CategoryDocument} from "./category.schema";
-import {Category} from "@cash-compass/shared-models";
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Category } from './category.entity';
 
 @Injectable()
 export class CategoryService {
   constructor(
-    @InjectModel('Category') private readonly categoryModel: Model<CategoryDocument>,
-  ) {
-  }
-
-  private transform(doc: CategoryDocument): Category {
-    return {
-      id: doc._id.toString(),
-      name: doc.name,
-      color: doc.color,
-      emoji: doc.emoji
-    };
-  }
+    @InjectRepository(Category)
+    private readonly categoryRepository: Repository<Category>,
+  ) {}
 
   async create(createCategoryDto: Partial<Category>): Promise<Category> {
-    const createdCategory = new this.categoryModel(createCategoryDto);
-    const saved = await createdCategory.save();
-    return this.transform(saved);
+    const createdCategory = this.categoryRepository.create(createCategoryDto);
+    return await this.categoryRepository.save(createdCategory);
   }
 
   async createBulk(createCategoryDtos: Partial<Category>[]): Promise<Category[]> {
-    const createdCategories: Category[] = [];
-
-    for (const dto of createCategoryDtos) {
-      const createdCategory = await this.create(dto);
-      createdCategories.push(createdCategory);
-    }
-
-    return createdCategories;
+    const createdCategories = this.categoryRepository.create(createCategoryDtos);
+    return await this.categoryRepository.save(createdCategories);
   }
 
   async findAll(): Promise<Category[]> {
-    const found = await this.categoryModel.find().exec();
-    return found.map(this.transform);
+    return await this.categoryRepository.find();
   }
 
   async findOne(id: string): Promise<Category> {
-    const found = await this.categoryModel.findById(id).exec();
+    const found = await this.categoryRepository.findOne({ where: { id: Number(id) }});
     if (!found) {
       throw new NotFoundException(`Category with id ${id} not found`);
     }
-    return this.transform(found);
+    return found;
   }
 
   async update(id: string, updateCategoryDto: Partial<Category>): Promise<Category> {
-    const updated = await this.categoryModel.findByIdAndUpdate(id, updateCategoryDto, { new: true }).exec();
-    return this.transform(updated);
-  }
-
-  async remove(id: string): Promise<Category> {
-    const deleted = await this.categoryModel.findByIdAndDelete(id).exec();
-    if (!deleted) {
+    await this.categoryRepository.update(id, updateCategoryDto);
+    const updated = await this.categoryRepository.findOne({ where: { id: Number(id) }});
+    if (!updated) {
       throw new NotFoundException(`Category with id ${id} not found`);
     }
-    return this.transform(deleted);
+    return updated;
+  }
+
+  async remove(id: string): Promise<void> {
+    const deleted = await this.categoryRepository.delete(id);
+    if (deleted.affected === 0) {
+      throw new NotFoundException(`Category with id ${id} not found`);
+    }
   }
 }

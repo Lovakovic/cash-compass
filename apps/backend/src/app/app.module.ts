@@ -1,24 +1,24 @@
 import {Module} from '@nestjs/common';
-import {environment} from '@cash-compass/environments';
 import {AppController} from './app.controller';
 import {AppService} from './app.service';
-import {MongooseModule} from '@nestjs/mongoose';
 import {ExpenseModule} from './features/expense/expense.module';
 import {CategoryModule} from './features/category/category.module';
 import {AuthModule} from './features/auth/auth.module';
-import {ConfigModule} from './config/config.module';
-
-const { mongodbUri } = environment;
+import {typeOrmConfig} from "../config/typeorm.config";
+import {TypeOrmModule} from "@nestjs/typeorm";
 
 @Module({
   imports: [
-    MongooseModule.forRoot(mongodbUri),
+    TypeOrmModule.forRoot(typeOrmConfig),
     ExpenseModule,
     CategoryModule,
-    AuthModule,
-    ConfigModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  constructor() {
+    console.log(__dirname)
+  }
+}

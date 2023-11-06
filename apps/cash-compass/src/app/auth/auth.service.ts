@@ -14,11 +14,11 @@ export class AuthService {
 
   login(user: UserLoginDto) {
     console.log(user, 'is logging in.')
-    return this.http.post(`${apiUrl}/login`, user);
+    return this.http.post(`${apiUrl}/auth/login`, user);
   }
 
   logout() {
     console.log('Logging out.');
-    return this.http.post(`${apiUrl}/logout`, {}, { withCredentials: true });
+    return this.http.post(`${apiUrl}/auth/logout`, {}, { withCredentials: true });
   }
 }

@@ -4,16 +4,22 @@ import {JwtStrategy} from './jwt.strategy';
 import {AuthController} from './auth.controller';
 import {JwtAuthGuard} from "./jwt-auth.guard";
 import {PassportModule} from "@nestjs/passport";
-import {ConfigModule} from "../../config/config.module";
 import {APP_GUARD} from "@nestjs/core";
-import {MongooseModule} from "@nestjs/mongoose";
-import {UserSchema} from "./data/user.schema";
+import {TypeOrmModule} from "@nestjs/typeorm";
+import {User} from "./data/user.entity";
+import {JwtModule} from "@nestjs/jwt";
+
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([User]),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET,
+      signOptions: {
+        expiresIn: process.env.JWT_EXPIRY
+      }
+    }),
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
-    ConfigModule,
   ],
   providers: [
     UserService,

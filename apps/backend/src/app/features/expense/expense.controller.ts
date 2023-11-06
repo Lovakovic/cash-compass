@@ -1,10 +1,8 @@
 import {BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Query} from '@nestjs/common';
 import {ExpenseService} from "./expense.service";
 import {ParseISOPipe} from "./pipes/parse-iso.pipe";
-import {Expense} from "@cash-compass/shared-models";
-import {Public} from "../auth/public.decorator";
+import {Expense} from "./expense.entity";
 
-@Public()
 @Controller('expense')
 export class ExpenseController {
   constructor(private readonly expenseService: ExpenseService) {}
@@ -42,16 +40,16 @@ export class ExpenseController {
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return this.expenseService.findOne(id);
+    return this.expenseService.findOne(Number(id));
   }
 
   @Put(':id')
   async update(@Param('id') id: string, @Body() updateExpenseDto: Partial<Expense>) {
-    return this.expenseService.update(id, updateExpenseDto);
+    return this.expenseService.update(Number(id), updateExpenseDto);
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    return this.expenseService.remove(id);
+    return this.expenseService.remove(Number(id));
   }
 }

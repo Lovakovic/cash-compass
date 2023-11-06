@@ -1,69 +1,81 @@
 import {Injectable, UnauthorizedException} from '@nestjs/common';
-import UserModel from "./data/user.schema";
-import {User} from "./data/user.model";
+import {InjectRepository} from '@nestjs/typeorm';
+import {Repository} from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import * as jwt from 'jsonwebtoken';
+import { User } from './data/user.entity';
 import {CreateUserDto, LoginUserDto} from "./data/user.dto";
-import {ConfigService} from "../../config/config.service";
+import {JwtService} from "@nestjs/jwt";
 import {JwtPayload} from "./jwt.strategy";
 
 @Injectable()
 export class UserService {
-  constructor(private configService: ConfigService) {
+  constructor(
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+    private jwtService: JwtService
+  ) {}
+
+	private buildUserResponse(user: User) {
+		return {
+			id: user.id,
+			username: user.username,
+			email: user.email,
+			firstName: user.firstName,
+			lastName: user.lastName,
+			createdAt: user.createdAt,
+			updatedAt: user.updatedAt
+		};
+	}
+
+
+	async create(createUserDto: CreateUserDto) {
+    const newUser = this.userRepository.create(createUserDto);
+    await this.userRepository.save(newUser);
+
+    return this.buildUserResponse(newUser);
   }
 
-  async create(user: CreateUserDto) {
-    try {
-      console.log('Creating user:', user);
-      const newUser = new UserModel(user);
-      const result = await newUser.save();
-      console.log('User created:', result);
-      return result.toObject() as User;
-    } catch (error) {
-      console.error('Error creating user:', error);
-      throw error;
-    }
-  }
+	async login(loginUserDto: LoginUserDto) {
+		const user = await this.userRepository.findOne({ where: { username: loginUserDto.username }});
+		if (!user) {
+			throw new UnauthorizedException('User not found');
+		}
 
-  async login(loginUserDto: LoginUserDto) {
-    const user = await UserModel.findOne({ username: loginUserDto.username }).exec();
-    if (!user) {
-      throw new UnauthorizedException();
-    }
+		const isMatch = await bcrypt.compare(loginUserDto.password, user.password);
+		if (!isMatch) {
+			throw new UnauthorizedException('Incorrect password');
+		}
 
-    const isMatch = await bcrypt.compare(loginUserDto.password, user.password);
-    if (!isMatch) {
-      throw new UnauthorizedException();
-    }
+		const payload: JwtPayload = { username: user.username, sub: user.id.toString() };
+		const accessToken = this.jwtService.sign(payload);
 
-    const payload = { username: user.username, sub: user._id } as JwtPayload;
-    const accessToken = jwt.sign(payload, this.configService.jwtSecret, {
-      expiresIn: this.configService.jwtExpiry,
-    });
-
-    return {
-      access_token: accessToken,
-      user: user.toObject(),
-    };
-  }
+		return {
+			access_token: accessToken,
+			user: this.buildUserResponse(user),
+		};
+	}
 
   async findAll(): Promise<User[]> {
-    const result = await UserModel.find().exec();
-    return result.map(doc => doc.toObject() as User);
+    return this.userRepository.find();
   }
 
-  async findOne(id: string): Promise<User | null> {
-    const result = await UserModel.findById(id).exec();
-    return result ? result.toObject() as User : null;
+  async findOne(id: string): Promise<User | undefined> {
+    return this.userRepository.findOne({where: { id: Number(id) }});
   }
 
-  async update(id: string, user: User): Promise<User> {
-    const result = await UserModel.findByIdAndUpdate(id, user, {new: true}).exec();
-    return result ? result.toObject() as User : null;
+  async update(id: string, attrs: Partial<User>): Promise<User> {
+    await this.userRepository.update(id, attrs);
+    const updatedUser = await this.userRepository.findOne({where: { id: Number(id) }});
+    if (!updatedUser) {
+      throw new Error('user not found');
+    }
+    return updatedUser;
   }
 
-  async delete(id: string): Promise<User> {
-    const result = await UserModel.findByIdAndRemove(id).exec();
-    return result ? result.toObject() as User : null;
+  async delete(id: string): Promise<void> {
+    const result = await this.userRepository.delete(id);
+    if (result.affected === 0) {
+      throw new Error('user not found');
+    }
   }
 }

@@ -1,0 +1,23 @@
+<!-- Expanded Navbar -->
+<div [@expandCollapse]="expanded ? 'expanded' : 'collapsed'" class="bg-primary p-4 rounded-md text-center">
+  <div [@fadeInOut]="expanded ? '*' : 'void'" class="flex flex-col md:flex-row justify-between">
+    <button class="w-full text-center p-4 rounded-md text-primary text-xl font-semibold md:mx-2 my-1 md:my-0"
+            cashCompassRaisedButton="info"
+            routerLink="/categories">Categories</button>
+    <button class="w-full text-center p-4 rounded-md text-primary text-xl font-semibold md:mx-2 my-1 md:my-0"
+            cashCompassRaisedButton="secondary"
+            routerLink="">New expense</button>
+  </div>
+</div>
+
+<!-- Collapsed Navbar -->
+<div (click)="toggleExpanded()"
+     (mouseover)="mouseOver()"
+     (mouseout)="mouseOut()"
+     [ngClass]="{
+       'arrow-icon-collapsed': true,
+       'arrow-flip': expanded,
+       'arrow-hover-down': hovering && !expanded,
+       'arrow-hover-up': hovering && expanded
+     }">
+</div>

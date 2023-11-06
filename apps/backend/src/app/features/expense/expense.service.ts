@@ -1,89 +1,97 @@
-import {Injectable, NotFoundException} from '@nestjs/common';
-import {InjectModel} from "@nestjs/mongoose";
-import {ExpenseDocument} from "./expense.schema";
-import mongoose from "mongoose";
-import {Expense} from "@cash-compass/shared-models";
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import {Between, In, Repository} from 'typeorm';
+import { Expense } from './expense.entity';
 
 @Injectable()
 export class ExpenseService {
-  constructor(
-    @InjectModel('Expense') private readonly expenseModel: mongoose.Model<ExpenseDocument>
-  ) {
-  }
+	constructor(
+		@InjectRepository(Expense) private readonly expenseRepository: Repository<Expense>
+	) {}
 
-  private transform(doc: ExpenseDocument): Expense {
-    return {
-      id: doc._id.toString(),
-      name: doc.name,
-      amount: doc.amount,
-      date: doc.date,
-      category: doc.category,
-      addedAt: doc.createdAt
-    };
-  }
-
-  async create(createExpenseDto: Partial<Expense>): Promise<Expense> {
-    const createdExpense = new this.expenseModel(createExpenseDto);
-    const saved = await createdExpense.save();
-    return this.transform(saved);
-  }
-
-  async createBulk(createExpenseDtos: Partial<Expense>[]): Promise<Expense[]> {
-    const createdExpenses: Expense[] = [];
-
-    for (const dto of createExpenseDtos) {
-      const createdExpense = await this.create(dto);
-      createdExpenses.push(createdExpense);
-    }
-
-    return createdExpenses;
-  }
-
-  async findAll(skip = 0, limit = 5): Promise<Expense[]> {
-    const found = await this.expenseModel.find()
-      .sort({ date: -1, createdAt: -1 })
-      .skip(skip)
-      .limit(limit)
-      .exec();
-    return found.map(this.transform);
-  }
-
-  async findByDateRange(startDate: Date, endDate: Date): Promise<Expense[]> {
-    const found = await this.expenseModel.find({
-      date: {
-        $gte: startDate,
-        $lt: endDate,
+	async create(createExpenseDto: Partial<Expense>): Promise<Expense> {
+		const expense = this.expenseRepository.create(createExpenseDto);
+		await this.expenseRepository.save(expense);
+		return this.expenseRepository.findOne({
+      where: {
+        id: expense.id
       },
-    })
-      .sort({ date: -1, createdAt: -1 })
-      .exec();
+			relations: ['category']
+    });
+	}
 
-    return found.map(this.transform);
-  }
+	async createBulk(createExpenseDtos: Partial<Expense>[]): Promise<Expense[]> {
+		const createdExpenses = await this.expenseRepository.save(createExpenseDtos);
+		const ids = createdExpenses.map(e => e.id);
+		return this.expenseRepository.find({
+			where: {
+				id: In(ids)
+			},
+			relations: ['category']
+		});
+	}
 
-  async findEarliestDate(): Promise<Date> {
-    const expense = await this.expenseModel.findOne().sort({ date: 1 }).limit(1);
-    return expense ? expense.date : null;
-  }
 
-  async findOne(id: string): Promise<Expense> {
-    const found = await this.expenseModel.findById(id).exec();
-    if (!found) {
-      throw new NotFoundException(`Expense with id ${id} not found`);
-    }
-    return this.transform(found);
-  }
+	async findAll(skip = 0, limit = 5): Promise<Expense[]> {
+		return this.expenseRepository.find({
+			relations: ['category'],
+			order: {
+				date: 'DESC',
+				createdAt: 'DESC'
+			},
+			skip: skip,
+			take: limit
+		});
+	}
 
-  async update(id: string, updateExpenseDto: Partial<Expense>): Promise<Expense> {
-    const updated = await this.expenseModel.findByIdAndUpdate(id, updateExpenseDto, { new: true }).exec();
-    return this.transform(updated);
-  }
+	async findByDateRange(startDate: Date, endDate: Date): Promise<Expense[]> {
+		return this.expenseRepository.find({
+			relations: ['category'],
+			where: {
+				date: Between(startDate, endDate),
+			},
+			order: {
+				date: 'DESC',
+				createdAt: 'DESC'
+			}
+		});
+	}
 
-  async remove(id: string): Promise<Expense> {
-    const deleted = await this.expenseModel.findByIdAndDelete(id).exec();
-    if (!deleted) {
-      throw new NotFoundException(`Expense with id ${id} not found`);
-    }
-    return this.transform(deleted);
-  }
+	async findEarliestDate(): Promise<Date> {
+		const expense = await this.expenseRepository.findOne({
+			order: {
+				date: 'ASC'
+			}
+		});
+		return expense ? expense.date : null;
+	}
+
+	async findOne(id: number): Promise<Expense> {
+		const expense = await this.expenseRepository.findOne({
+			where: { id },
+			relations: ['category']
+		});
+		if (!expense) {
+			throw new NotFoundException(`Expense with id ${id} not found`);
+		}
+		return expense;
+	}
+
+	async update(id: number, updateExpenseDto: Partial<Expense>): Promise<Expense> {
+		await this.expenseRepository.update(id, updateExpenseDto);
+		const updatedExpense = await this.expenseRepository.findOne({
+			where: {id },
+			relations: ['category']
+		});
+		if (!updatedExpense) {
+			throw new NotFoundException(`Expense with id ${id} not found`);
+		}
+		return updatedExpense;
+	}
+
+	async remove(id: number): Promise<Expense> {
+		const expense = await this.findOne(id);
+		await this.expenseRepository.delete(id);
+		return expense;
+	}
 }
