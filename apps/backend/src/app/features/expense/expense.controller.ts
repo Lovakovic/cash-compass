@@ -16,10 +16,14 @@ export class ExpenseController {
   async createBulk(@Body() createExpenseDtos: Partial<Expense>[]) {
     return this.expenseService.createBulk(createExpenseDtos);
   }
-
   @Get()
-  async findAll(@Query('skip') skip: string, @Query('limit') limit: string) {
-    return this.expenseService.findAll(parseInt(skip), parseInt(limit));
+  async findAll(
+    @Query('skip') skip?: string,
+    @Query('limit') limit?: string
+  ) {
+    const parsedSkip = skip ? parseInt(skip) : undefined;
+    const parsedLimit = limit ? parseInt(limit) : undefined;
+    return this.expenseService.findAll(parsedSkip, parsedLimit);
   }
 
   @Get('byDateRange')

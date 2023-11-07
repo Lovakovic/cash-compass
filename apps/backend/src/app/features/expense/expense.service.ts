@@ -31,18 +31,29 @@ export class ExpenseService {
 		});
 	}
 
+  async findAll(skip?: number, limit?: number): Promise<Expense[]> {
+    // If no skip and limit are defined, do not apply pagination
+    if (skip === undefined && limit === undefined) {
+      return this.expenseRepository.find({
+        relations: ['category'],
+        order: {
+          date: 'DESC',
+          createdAt: 'DESC'
+        }
+      });
+    }
 
-	async findAll(skip = 0, limit = 5): Promise<Expense[]> {
-		return this.expenseRepository.find({
-			relations: ['category'],
-			order: {
-				date: 'DESC',
-				createdAt: 'DESC'
-			},
-			skip: skip,
-			take: limit
-		});
-	}
+    // Apply pagination if skip or limit is provided
+    return this.expenseRepository.find({
+      relations: ['category'],
+      order: {
+        date: 'DESC',
+        createdAt: 'DESC'
+      },
+      skip: skip,
+      take: limit
+    });
+  }
 
 	async findByDateRange(startDate: Date, endDate: Date): Promise<Expense[]> {
 		return this.expenseRepository.find({

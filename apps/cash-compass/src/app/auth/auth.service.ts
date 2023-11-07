@@ -13,11 +13,10 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   login(user: UserLoginDto) {
-    return this.http.post(`${apiUrl}/auth/login`, user, { withCredentials: true });
+    return this.http.post(`${apiUrl}/auth/login`, user);
   }
 
   logout() {
-    console.log('Logging out.');
-    return this.http.post(`${apiUrl}/auth/logout`, {}, { withCredentials: true });
+    return this.http.post(`${apiUrl}/auth/logout`, {});
   }
 }
