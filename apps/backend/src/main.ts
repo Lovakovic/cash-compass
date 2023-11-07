@@ -1,15 +1,12 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-
+import * as dotenv from 'dotenv';
+import {corsConfig} from "./config/cors.config";
+import {validationConfig} from "./config/validation.config";
+import cookieParser from 'cookie-parser';
 import { AppModule } from './app/app.module';
 
 
-import * as dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -17,13 +14,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
-  app.enableCors();
-
-  app.useGlobalPipes(new ValidationPipe({
-    whitelist: true,
-    forbidNonWhitelisted: true,
-    transform: true,
-  }));
+  app.enableCors(corsConfig);
+  app.use(cookieParser())
+  app.useGlobalPipes(new ValidationPipe(validationConfig));
 
   const port = process.env.PORT || 3000;
   await app.listen(port);

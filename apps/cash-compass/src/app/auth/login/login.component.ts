@@ -17,14 +17,14 @@ export class LoginComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required]],
       password: ['', [Validators.required]]
     });
   }
 
-  onLogin(): void {
+  onLogin(){
     if (this.loginForm.valid) {
       const { username, password } = this.loginForm.value;
       this.authService.login({ username, password }).subscribe({

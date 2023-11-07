@@ -1,7 +1,6 @@
-import {Controller, Post, Body, Get, UseGuards, Req, Res} from '@nestjs/common';
-import { Request, Response } from 'express';
+import {Body, Controller, Get, Post, Req, Res} from '@nestjs/common';
+import {Request, Response} from 'express';
 import {UserService} from "./user.service";
-import {JwtAuthGuard} from "./jwt-auth.guard";
 import {CreateUserDto, LoginUserDto} from "./data/user.dto";
 import {Public} from "./public.decorator";
 
@@ -17,20 +16,27 @@ export class AuthController {
 
   @Public()
   @Post('login')
-  async login(@Body() loginUserDto: LoginUserDto, @Res({ passthrough: true }) response: Response) {
-    const { access_token } = await this.userService.login(loginUserDto);
-    response.cookie('jwt', access_token, { httpOnly: true });
-    return { message: 'Success' };
-  }
+	async login(@Req() req: Request, @Res({ passthrough: true }) res: Response, @Body() loginUserDto: LoginUserDto) {
+		const { access_token, user } = await this.userService.login(loginUserDto);
+
+    res.cookie('jwt', access_token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      path: '/',
+      maxAge: 1000 * 60 * 60 * 24 // 24 hours for example
+    });
+
+		return user;
+	}
 
   @Post('logout')
-  @Public()
-  logout(@Res({ passthrough: true }) response: Response) {
-    response.clearCookie('jwt');
+  public logout(@Res({ passthrough: true }) response: Response) {
+    response.clearCookie('jwt', {
+      path: '/'
+    });
     return { message: 'Logged out successfully' };
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Req() req: Request) {
     return req.user;

@@ -13,8 +13,7 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   login(user: UserLoginDto) {
-    console.log(user, 'is logging in.')
-    return this.http.post(`${apiUrl}/auth/login`, user);
+    return this.http.post(`${apiUrl}/auth/login`, user, { withCredentials: true });
   }
 
   logout() {
