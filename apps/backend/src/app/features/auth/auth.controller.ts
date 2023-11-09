@@ -14,6 +14,7 @@ export class AuthController {
     return this.userService.create(createUserDto);
   }
 
+  // TODO - fix the hardcoded cookie expiry
   @Public()
   @Post('login')
 	async login(@Req() req: Request, @Res({ passthrough: true }) res: Response, @Body() loginUserDto: LoginUserDto) {
