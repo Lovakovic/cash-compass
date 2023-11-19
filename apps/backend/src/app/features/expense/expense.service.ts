@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {Between, In, Repository} from 'typeorm';
-import { Expense } from './expense.entity';
+import { Expense } from './data/expense.entity';
 
 @Injectable()
 export class ExpenseService {

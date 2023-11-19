@@ -1,5 +1,6 @@
-import {BaseEntity, BeforeInsert, Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import {BaseEntity, BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import * as bcrypt from 'bcrypt';
+import {Expense} from "../../expense/data/expense.entity";
 
 @Entity()
 export class User extends BaseEntity {
@@ -26,6 +27,9 @@ export class User extends BaseEntity {
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   updatedAt: Date;
+
+  @OneToMany(() => Expense, expense => expense.user)
+  expenses: Expense[];
 
   @BeforeInsert()
   async hashPassword() {

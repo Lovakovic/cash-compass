@@ -1,7 +1,7 @@
 import {BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Query} from '@nestjs/common';
 import {ExpenseService} from "./expense.service";
 import {ParseISOPipe} from "./pipes/parse-iso.pipe";
-import {Expense} from "./expense.entity";
+import {Expense} from "./data/expense.entity";
 
 @Controller('expense')
 export class ExpenseController {

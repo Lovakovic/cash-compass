@@ -1,5 +1,5 @@
 import {BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
-import {Expense} from "../expense/expense.entity";
+import {Expense} from "../expense/data/expense.entity";
 
 @Entity()
 export class Category extends BaseEntity {
