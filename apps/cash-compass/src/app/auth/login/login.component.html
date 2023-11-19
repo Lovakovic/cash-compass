@@ -36,6 +36,10 @@
               type="submit"
       >Login</button>
     </form>
+
+    <div *ngIf="loginError" class="text-danger text-center">
+      <p>{{ loginError }}</p>
+    </div>
   </div>
 
   <div class="hidden md:block w-px bg-secondary h-48 self-center"></div>
