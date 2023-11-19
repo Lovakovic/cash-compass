@@ -5,10 +5,10 @@ import * as bcrypt from 'bcrypt';
 import { User } from './data/user.entity';
 import {CreateUserDto, LoginUserDto} from "./data/user.dto";
 import {JwtService} from "@nestjs/jwt";
-import {JwtPayload} from "./jwt.strategy";
+import {JwtPayload} from "./passport/jwt.strategy";
 
 @Injectable()
-export class UserService {
+export class AuthService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
@@ -76,6 +76,24 @@ export class UserService {
     const result = await this.userRepository.delete(id);
     if (result.affected === 0) {
       throw new Error('user not found');
+    }
+  }
+
+  public convertToMilliseconds(expiry: string): number {
+    const time = parseInt(expiry.slice(0, -1), 10);
+    const unit = expiry.slice(-1);
+
+    switch (unit) {
+      case 's':
+        return time * 1000;
+      case 'm':
+        return time * 1000 * 60;
+      case 'h':
+        return time * 1000 * 60 * 60;
+      case 'd':
+        return time * 1000 * 60 * 60 * 24;
+      default:
+        throw new Error(`Unsupported time format: ${expiry}`);
     }
   }
 }
