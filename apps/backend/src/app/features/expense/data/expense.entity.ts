@@ -1,6 +1,6 @@
 import {BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import {Category} from "../../category/category.entity";
-import {User} from "../../auth/data/user.entity";
+import {User} from "../../user/data/user.entity";
 
 @Entity()
 export class Expense extends BaseEntity {

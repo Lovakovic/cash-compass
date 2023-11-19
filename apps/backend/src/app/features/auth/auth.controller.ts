@@ -1,29 +1,31 @@
 import {Body, Controller, Get, Post, Req, Res} from '@nestjs/common';
 import {Request, Response} from 'express';
 import {AuthService} from "./auth.service";
-import {CreateUserDto, LoginUserDto} from "./data/user.dto";
+import {CreateUserDto, LoginUserDto} from "./data/auth.dto";
 import {Public} from "./passport/public.decorator";
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+	  private readonly authService: AuthService,
+  ) {}
 
   @Public()
   @Post('register')
   async register(@Body() createUserDto: CreateUserDto) {
-    return this.authService.create(createUserDto);
+    return this.authService.register(createUserDto);
   }
 
   @Public()
   @Post('login')
 	async login(@Req() req: Request, @Res({ passthrough: true }) res: Response, @Body() loginUserDto: LoginUserDto) {
-		const { access_token, user } = await this.authService.login(loginUserDto);
+    const { access_token, user } = await this.authService.login(loginUserDto);
 
     res.cookie('jwt', access_token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       path: '/',
-      maxAge: this.authService.convertToMilliseconds(process.env.JWT_EXPIRY)
+      maxAge: AuthService.convertToMilliseconds(process.env.JWT_EXPIRY)
     });
 
 		return user;
