@@ -24,6 +24,6 @@ export class Expense extends BaseEntity {
   createdAt: Date;
 
   @ManyToOne(() => User, user => user.expenses)
-  @JoinColumn({name: 'userId'})
+  @JoinColumn({ name: 'userId' })
   user: User;
 }
