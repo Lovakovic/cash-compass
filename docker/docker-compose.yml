@@ -13,5 +13,18 @@ services:
     command: ["mysqld", "--default-authentication-plugin=mysql_native_password"]
     restart: unless-stopped
 
+  backend:
+    container_name: cash_compass_backend
+    build:
+      context: ../
+      dockerfile: apps/backend/Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - ../.env
+    depends_on:
+      - mysql
+    restart: unless-stopped
+
 volumes:
   mysql-data:

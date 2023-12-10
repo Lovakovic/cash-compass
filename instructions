@@ -1,33 +1,33 @@
 Context:
-  Project Overview: CashCompass is a personal finance web application focused on budget tracking and displaying financial statistics in a visually engaging manner.
+ Project Overview: CashCompass is a personal finance web application focused on budget tracking and displaying financial statistics in a visually engaging manner.
 
-  Technology Stack:
-    Frontend: Angular (TypeScript-based)
-    Backend: Node.js with NestJS
-    Database: MySQL, managed within a Docker container
-    ORM: TypeORM
-    Version Control: Hosted on GitHub
+   Technology Stack:
+     Frontend: Angular (TypeScript-based)
+     Backend: Node.js with NestJS
+     Database: MySQL, managed within a Docker container
+     ORM: TypeORM
+     Version Control: Hosted on GitHub
 
-  Current State of Development:
-    Core functionality for expense tracking and a simple authentication system is implemented.
+   Current State of Development:
+     Core functionality for expense tracking and a simple authentication system is implemented.
 
-  Immediate Goal:
-    Set up a CI/CD pipeline for continuous deployment, enabling the use of the app in its current state and facilitating future development.
+   Immediate Goal:
+     Set up a CI/CD pipeline for continuous deployment, enabling the use of the app in its current state and facilitating future development.
 
-  Team Structure:
-    Solo project.
+   Team Structure:
+     Solo project.
 
-  Timeline:
-    Flexible, as this is a personal project without strict deadlines.
+   Timeline:
+     Flexible, as this is a personal project without strict deadlines.
 
-  Integration and Dependencies:
-    Currently, no external integrations. Future integrations are considered but not immediate.
+   Integration and Dependencies:
+     Currently, no external integrations. Future integrations are considered but not immediate.
 
-  Testing and Quality Assurance:
-    Aim to maintain high-quality standards despite it being a private project.
+   Testing and Quality Assurance:
+     Aim to maintain high-quality standards despite it being a private project.
 
-  Deployment and Maintenance:
-    Establish a CI/CD pipeline for seamless deployment and ongoing development.
+   Deployment and Maintenance:
+     Establish a CI/CD pipeline for seamless deployment and ongoing development.
 
 
 Response guidelines:
