@@ -10,7 +10,6 @@ export class AuthController {
 	  private readonly authService: AuthService,
   ) {}
 
-  @Public()
   @Post('register')
   async register(@Body() createUserDto: CreateUserDto) {
     return this.authService.register(createUserDto);

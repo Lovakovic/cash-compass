@@ -40,4 +40,4 @@ Thumbs.db
 
 .angular
 /roadmap.md
-/apps/backend/.env
+*.env

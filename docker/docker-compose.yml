@@ -3,17 +3,14 @@ version: '3.8'
 services:
   mysql:
     container_name: cash_compass_mysql
-    image: mysql:latest
-    environment:
-      MYSQL_DATABASE: 'cash_compass'
-      MYSQL_USER: 'cash'
-      MYSQL_PASSWORD: 'cash'
-      MYSQL_ROOT_PASSWORD: 'cash'
+    image: mysql:8.2.0
+    env_file:
+      - ../.env
     ports:
       - "3307:3306"
     volumes:
       - mysql-data:/var/lib/mysql
-    command: ['mysqld', '--default-authentication-plugin=mysql_native_password']
+    command: ["mysqld", "--default-authentication-plugin=mysql_native_password"]
     restart: unless-stopped
 
 volumes:
