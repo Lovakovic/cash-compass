@@ -1,5 +1,5 @@
 import {BaseEntity, BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import {Expense} from "../../expense/data/expense.entity";
 
 @Entity()

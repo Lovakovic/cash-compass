@@ -1,5 +1,5 @@
 import {ConflictException, Injectable, UnauthorizedException} from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import {CreateUserDto, LoginUserDto} from "./data/auth.dto";
 import {JwtService} from "@nestjs/jwt";
 import {JwtPayload} from "./passport/jwt.strategy";
@@ -19,7 +19,7 @@ export class AuthService {
 			throw new UnauthorizedException('User not found');
 		}
 
-		const isMatch = await bcrypt.compare(loginUserDto.password, user.password);
+    const isMatch = await bcrypt.compare(loginUserDto.password, user.password);
 		if (!isMatch) {
 			throw new UnauthorizedException('Incorrect password');
 		}

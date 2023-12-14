@@ -5,7 +5,7 @@ services:
     container_name: cash_compass_mysql
     image: mysql:8.2.0
     env_file:
-      - ../.env
+      - ../.env.docker
     ports:
       - "3307:3306"
     volumes:
@@ -21,7 +21,7 @@ services:
     ports:
       - "3000:3000"
     env_file:
-      - ../.env
+      - ../.env.docker
     depends_on:
       - mysql
     restart: unless-stopped
