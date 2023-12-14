@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {environment} from "@cash-compass/environments";
 import {HttpClient} from "@angular/common/http";
 import {UserLoginDto, UserProfile} from "./data/user.model";
 import {BehaviorSubject, Observable, tap} from "rxjs";
+import { environment } from '../../environemnts/environment.dev';
 
 const { apiUrl } = environment;
 
@@ -25,13 +25,6 @@ export class AuthService {
   logout(): Observable<any> {
     return this.http.post(`${apiUrl}/auth/logout`, {}).pipe(
       tap(() => this.userProfileSubject.next(null))
-    );
-  }
-
-  fetchProfile(): void {
-    this.http.get<UserProfile>(`${apiUrl}/auth/profile`).subscribe(
-      (profile) => this.userProfileSubject.next(profile),
-      (error) => console.error('Error fetching profile', error)
     );
   }
 }

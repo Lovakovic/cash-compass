@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {Observable } from "rxjs";
 import {HttpClient} from "@angular/common/http";
-import {environment} from "@cash-compass/environments";
 import {Category} from "../model/category.model";
+import { environment } from '../../../environemnts/environment.dev';
 const { apiUrl } = environment;
 
 @Injectable({
