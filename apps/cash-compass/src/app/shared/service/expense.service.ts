@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {BehaviorSubject, map, Observable, tap} from "rxjs";
-import {environment} from "@cash-compass/environments";
 import {Expense} from "../model/expense.model";
+import { environment } from '../../../environemnts/environment.dev';
 
 const { apiUrl} = environment;
 
