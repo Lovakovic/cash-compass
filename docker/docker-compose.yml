@@ -26,5 +26,18 @@ services:
       - mysql
     restart: unless-stopped
 
+  frontend:
+    container_name: cash_compass_frontend
+    build:
+      context: ../
+      dockerfile: apps/cash-compass/Dockerfile
+    ports:
+      - "4200:4200"
+    env_file:
+      - ../.env.docker
+    depends_on:
+      - backend
+    restart: unless-stopped
+
 volumes:
   mysql-data:
