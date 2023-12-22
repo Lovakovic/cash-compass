@@ -1,18 +1,10 @@
 version: '3.8'
 
-services:
-  mysql:
-    container_name: cash_compass_mysql
-    image: mysql:8.2.0
-    env_file:
-      - ../.env.docker
-    ports:
-      - "3307:3306"
-    volumes:
-      - mysql-data:/var/lib/mysql
-    command: ["mysqld", "--default-authentication-plugin=mysql_native_password"]
-    restart: unless-stopped
+networks:
+  cash_compass_network:
+    driver: bridge
 
+services:
   backend:
     container_name: cash_compass_backend
     build:
@@ -22,6 +14,8 @@ services:
       - "3000:3000"
     env_file:
       - ../.env.docker
+    networks:
+      - cash_compass_network
     depends_on:
       - mysql
     restart: unless-stopped
@@ -35,9 +29,16 @@ services:
       - "4200:4200"
     env_file:
       - ../.env.docker
+    networks:
+      - cash_compass_network
     depends_on:
       - backend
     restart: unless-stopped
 
+  mysql:
+    extends:
+      file: services.yml
+      service: mysql
+
 volumes:
-  mysql-data:
+    mysql-data:

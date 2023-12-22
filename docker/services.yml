@@ -1,0 +1,23 @@
+version: '3.8'
+
+networks:
+  cash_compass_network:
+    driver: bridge
+
+services:
+  mysql:
+    container_name: cash_compass_mysql
+    image: mysql:8.2.0
+    env_file:
+      - ../.env.docker
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - cash_compass_network
+    command: ["mysqld", "--default-authentication-plugin=mysql_native_password"]
+    restart: unless-stopped
+
+volumes:
+  mysql-data:
