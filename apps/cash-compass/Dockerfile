@@ -1,35 +1,31 @@
 # Stage 1: Build the Angular application
+# Use the official Node.js 20.9.0 image as a base image
 FROM node:20.9.0 AS build-stage
 
+# Set the working directory in the Docker image
 WORKDIR /app
 
-# Copy package.json and install dependencies
-COPY package.json yarn.lock ./
+# Copy package.json and yarn.lock file
+COPY package.json yarn.lock /app/
+
+# Install dependencies using Yarn
 RUN yarn install
 
-# Copy the rest of the app
-COPY . .
+# Copy the Nx workspace files into the Docker image
+COPY . /app/
 
-# Use the local nx from node_modules to build the application
-RUN ./node_modules/.bin/nx run cash-compass:build:production
-
-# Copy env.sh to the build output directory
-COPY apps/cash-compass/env.sh ./dist/apps/cash-compass
+# Build the Angular application using Yarn
+RUN yarn nx run cash-compass:build:development
 
 # Stage 2: Serve the application using Nginx
+# Use the official Nginx image
 FROM nginx:alpine
 
-# Copy the built app from the previous stage
+# Copy the built app to the Nginx server
 COPY --from=build-stage /app/dist/apps/cash-compass /usr/share/nginx/html
 
-# Copy the environment script from the build output directory
-COPY --from=build-stage /app/dist/apps/cash-compass/env.sh /usr/share/nginx/html
+# Expose port 80
+EXPOSE 80
 
-# Make the script executable
-RUN chmod +x /usr/share/nginx/html/env.sh
-
-# Expose port 4200
-EXPOSE 4200
-
-# Start Nginx and run the environment script
-CMD ["/bin/sh", "-c", "/usr/share/nginx/html/env.sh && nginx -g 'daemon off;'"]
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]
