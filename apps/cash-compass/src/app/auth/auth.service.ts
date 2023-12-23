@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {UserLoginDto, UserProfile} from "./data/user.model";
 import {BehaviorSubject, Observable, tap} from "rxjs";
-import { environment } from '../../environemnts/environment.dev';
+import { environment } from "../../environments/environment";
 
 const { apiUrl } = environment;
 
