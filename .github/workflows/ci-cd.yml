@@ -14,7 +14,7 @@ jobs:
 
       - name: Set up Docker
         run: |
-          echo "${{ secrets.GCA_SA_KEY }}" | docker login -u "_json_key" --password-stdin europe-west8-docker.pkg.dev
+          echo "${{ secrets.GAR_SA_KEY }}" | docker login -u "_json_key" --password-stdin europe-west8-docker.pkg.dev
 
       - name: Build and Push Docker Images
         run: |
