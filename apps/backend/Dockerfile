@@ -22,5 +22,5 @@ RUN nx run backend:build:production
 # Expose port
 EXPOSE 3000
 
-# Start the application (adjust as per your Nx commands for production)
+# Start the application
 CMD ["node", "dist/apps/backend/main"]

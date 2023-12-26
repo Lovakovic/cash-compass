@@ -7,7 +7,8 @@ networks:
 services:
   backend:
     container_name: cash_compass_backend
-    image: gcr.io/cashcompass-409018/cash_compass_backend:latest
+    image: europe-west8-docker.pkg.dev/cashcompass-409018/backend-images/cash-compass-backend:latest
+    pull_policy: always
     ports:
       - "3000:3000"
     env_file:
@@ -20,7 +21,8 @@ services:
 
   frontend:
     container_name: cash_compass_frontend
-    image: gcr.io/cashcompass-409018/cash_compass_frontend:latest
+    image: europe-west8-docker.pkg.dev/cashcompass-409018/frontend-images/cash-compass-frontend:latest
+    pull_policy: always
     ports:
       - "443:443"
     volumes:

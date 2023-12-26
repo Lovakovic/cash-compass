@@ -18,12 +18,11 @@ RUN yarn nx run cash-compass:build:production
 
 # Stage 2: Serve the application using Nginx
 FROM nginx:alpine
-ARG NGINX_CONF
 
 COPY --from=build-stage /app/dist/apps/cash-compass /usr/share/nginx/html
 
-# If NGINX_CONF is provided, copy it to the container
-COPY /apps/cash-compass/${NGINX_CONF} /etc/nginx/nginx.conf
+# Copy the Nginx configuration file
+COPY /apps/cash-compass/nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 80
 EXPOSE 443
