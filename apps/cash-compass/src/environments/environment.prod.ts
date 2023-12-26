@@ -1,4 +1,4 @@
 export const environment = {
   mode: 'production',
-  apiUrl: 'https://cash-compass/api',
+  apiUrl: 'http://backend:3000/api',
 };

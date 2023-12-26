@@ -1,5 +1,4 @@
 # Stage 1: Build the Angular application
-# Use the official Node.js 20.9.0 image as a base image
 FROM node:20.9.0 AS build-stage
 
 # Set the working directory in the Docker image
@@ -15,17 +14,18 @@ RUN yarn install
 COPY . /app/
 
 # Build the Angular application using Yarn
-RUN yarn nx run cash-compass:build:development
+RUN yarn nx run cash-compass:build:production
 
 # Stage 2: Serve the application using Nginx
-# Use the official Nginx image
 FROM nginx:alpine
+ARG NGINX_CONF
 
-# Copy the built app to the Nginx server
 COPY --from=build-stage /app/dist/apps/cash-compass /usr/share/nginx/html
 
-# Expose port 80
-EXPOSE 80
+# If NGINX_CONF is provided, copy it to the container
+COPY /apps/cash-compass/${NGINX_CONF} /etc/nginx/nginx.conf
 
-# Start Nginx
+EXPOSE 80
+EXPOSE 443
+
 CMD ["nginx", "-g", "daemon off;"]
