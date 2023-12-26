@@ -1,0 +1,30 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - 5-set-up-a-ci-cd-pipeline
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker
+        run: |
+          echo "${{ secrets.GCP_SA_KEY }}" | docker login -u "oauth2accesstoken" --password-stdin "europe-west8-docker.pkg.dev"
+
+      - name: Build and Push Docker Images
+        run: |
+          bash docker/build-images.sh
+
+      - name: Deploy to GCE VM
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          VM_IP: 34.154.128.23
+        run: |
+          echo "$SSH_PRIVATE_KEY" > private_key.pem
+          chmod 600 private_key.pem
+          ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@$VM_IP 'bash -s' < update-containers.sh
