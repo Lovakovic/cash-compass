@@ -12,13 +12,9 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Debug Secret
+      - name: Set up Docker (Verbose Mode)
         run: |
-          echo "${{ secrets.GAR_SA_KEY }}" | head -c 100
-
-      - name: Set up Docker
-        run: |
-          echo "${{ secrets.GAR_SA_KEY }}" | docker login -u "_json_key" --password-stdin europe-west8-docker.pkg.dev
+          echo "${{ secrets.GAR_SA_KEY }}" | docker --debug login -u "_json_key" --password-stdin europe-west8-docker.pkg.dev
 
       - name: Build and Push Docker Images
         run: |
