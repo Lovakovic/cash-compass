@@ -12,16 +12,9 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Check Secret Length
-        run: |
-          echo "Length of GCA_SA_KEY: ${#GCA_SA_KEY}"
-        env:
-          GCA_SA_KEY: ${{ secrets.GCA_SA_KEY }}
-
-
       - name: Set up Docker
         run: |
-          echo ${{ secrets.GCA_SA_KEY }} | docker login -u "oauth2accesstoken" --password-stdin europe-west8-docker.pkg.dev
+          echo "${{ secrets.GCA_SA_KEY }}" | docker login -u "oauth2accesstoken" --password-stdin europe-west8-docker.pkg.dev
 
       - name: Build and Push Docker Images
         run: |
