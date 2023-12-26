@@ -1,0 +1,43 @@
+version: '3.8'
+
+networks:
+  cash_compass_network:
+    driver: bridge
+
+services:
+  backend:
+    container_name: cash_compass_backend
+    image: gcr.io/cashcompass-409018/cash_compass_backend:latest
+    ports:
+      - "3000:3000"
+    env_file:
+      - ../.env.docker
+    networks:
+      - cash_compass_network
+    depends_on:
+      - mysql
+    restart: unless-stopped
+
+  frontend:
+    container_name: cash_compass_frontend
+    image: gcr.io/cashcompass-409018/cash_compass_frontend:latest
+    ports:
+      - "443:443"
+    volumes:
+      - /etc/letsencrypt/live/budget-compass.com/fullchain.pem:/etc/ssl/certs/fullchain.pem
+      - /etc/letsencrypt/live/budget-compass.com/privkey.pem:/etc/ssl/private/privkey.pem
+    env_file:
+      - ../.env.docker
+    networks:
+      - cash_compass_network
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  mysql:
+    extends:
+      file: services.yml
+      service: mysql
+
+volumes:
+  mysql-data:
